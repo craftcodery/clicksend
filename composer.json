@@ -5,7 +5,7 @@
         "clicksend"
     ],
     "homepage": "https://github.com/craftcodery/clicksend",
-    "license": "proprietary",
+    "license": "MIT",
     "require": {
         "php": "^7.4|^8.0",
         "ext-json": "*",

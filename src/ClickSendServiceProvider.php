@@ -11,9 +11,7 @@ class ClickSendServiceProvider extends ServiceProvider
         $this->registerPublishables();
 
         $this->app->bind(ClickSend::class, function () {
-            $config = config('clicksend');
-
-            return new ClickSend($config);
+            return new ClickSend();
         });
     }
 

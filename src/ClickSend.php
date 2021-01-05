@@ -3,8 +3,8 @@
 namespace CraftCodery\ClickSend;
 
 use Barryvdh\DomPDF\PDF;
-use CraftCodery\ClickSend\Contracts\CanReceiveMailers;
-use CraftCodery\ClickSend\Contracts\CanSendMailers;
+use CraftCodery\ClickSend\Traits\CanReceiveMailers;
+use CraftCodery\ClickSend\Traits\CanSendMailers;
 use CraftCodery\ClickSend\Models\ClickSendReturnAddress;
 use GuzzleHttp\Client;
 
@@ -12,15 +12,15 @@ class ClickSend
 {
     protected Client $client;
 
-    public function __construct(array $config)
+    public function __construct()
     {
         $apiHost = app()->isProduction() ? 'rest.clicksend.com' : 'private-anon-5719b2dfad-clicksend.apiary-mock.com';
 
         $this->client = new Client([
             'base_uri' => 'https://' . $apiHost . '/v3/',
             'auth'     => [
-                $config['services.clicksend.username'],
-                $config['services.clicksend.key']
+                config('clicksend.username'),
+                config('services.clicksend.key'),
             ],
             'timeout'  => 15,
         ]);
@@ -73,7 +73,7 @@ class ClickSend
     {
         $content = $this->formatForPdf($content);
         $rear_pdf_options = [
-            'view'        => 'direct_mail.postcards.rear-pdf',
+            'view'        => 'clicksend::postcard_rear',
             'size'        => 'a5',
             'orientation' => 'landscape',
         ];
@@ -116,7 +116,7 @@ class ClickSend
      */
     protected function generatePdf(string $content, array $options = [])
     {
-        $pdf = PDF::loadView($options['view'] ?? 'direct_mail.pdf', compact('content'));
+        $pdf = PDF::loadView($options['view'] ?? 'clicksend::letter', compact('content'));
 
         if (isset($options['size']) || isset($options['orientation'])) {
             $pdf->setPaper(
