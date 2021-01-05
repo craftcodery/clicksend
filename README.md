@@ -89,12 +89,6 @@ $user->sendLetterTo($recipient, 'This is the content of the letter.');
 $user->sendPostcardTo($recipient, 'https://example.com/postcard-image.pdf', 'This is the content on the rear of the postcard.');
 ```
 
-## Testing
-
-``` bash
-composer test
-```
-
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

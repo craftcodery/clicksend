@@ -21,7 +21,7 @@ trait CanSendMailers
      *
      * @return array
      */
-    public function sendLetterTo(CanReceiveMailers $recipient, string $content)
+    public function sendLetterTo($recipient, string $content)
     {
         return (new ClickSend())->sendLetter($this, $recipient, $content);
     }
@@ -35,7 +35,7 @@ trait CanSendMailers
      *
      * @return void
      */
-    public function sendPostcardTo(CanReceiveMailers $recipient, string $front_pdf_url, string $content)
+    public function sendPostcardTo($recipient, string $front_pdf_url, string $content)
     {
         (new ClickSend())->sendPostcard($this, $recipient, $front_pdf_url, $content);
     }
