@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
   <style>
-    {!! str_replace('px', 'pt', file_get_contents(asset('css/app.css'))) !!}
+    {!! str_replace('px', 'pt', file_get_contents('../css/content.css')) !!}
 
     @page {
       margin: .75in;
