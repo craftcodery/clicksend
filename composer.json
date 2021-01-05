@@ -1,0 +1,46 @@
+{
+    "name": "craftcodery/clicksend",
+    "description": "ClickSend integration for Laravel",
+    "keywords": [
+        "clicksend"
+    ],
+    "homepage": "https://github.com/craftcodery/clicksend",
+    "license": "proprietary",
+    "require": {
+        "php": "^7.4|^8.0",
+        "ext-json": "*",
+        "barryvdh/laravel-dompdf": "^0.9.0",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "illuminate/support": "^8.0"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-master",
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "CraftCodery\\ClickSend\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CraftCodery\\ClickSend\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "CraftCodery\\ClickSend\\ClickSendServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
