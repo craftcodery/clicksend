@@ -14,22 +14,12 @@
         "illuminate/support": "^8.0"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-master",
-        "orchestra/testbench": "^6.0",
-        "phpunit/phpunit": "^9.3"
+        "roave/security-advisories": "dev-master"
     },
     "autoload": {
         "psr-4": {
             "CraftCodery\\ClickSend\\": "src"
         }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "CraftCodery\\ClickSend\\Tests\\": "tests"
-        }
-    },
-    "scripts": {
-        "test": "vendor/bin/phpunit"
     },
     "config": {
         "sort-packages": true
