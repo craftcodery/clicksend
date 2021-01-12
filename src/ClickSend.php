@@ -162,7 +162,7 @@ class ClickSend
         $return_address_id = ClickSendReturnAddress::where('hash', md5(json_encode($return_address_data)))->value('clicksend_id');
 
         if (!$return_address_id) {
-            return $this->createReturnAddress($sender, $return_address_data);
+            return $this->createReturnAddress($return_address_data);
         }
 
         return $return_address_id;
