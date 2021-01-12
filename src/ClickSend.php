@@ -6,18 +6,15 @@ use Barryvdh\DomPDF\Facade as PDF;
 use CraftCodery\ClickSend\Models\ClickSendReturnAddress;
 use CraftCodery\ClickSend\Traits\CanReceiveMailers;
 use CraftCodery\ClickSend\Traits\CanSendMailers;
-use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 
 class ClickSend
 {
     protected string $base_url;
-    protected PendingRequest $client;
 
     public function __construct()
     {
         $this->base_url = 'https://' . (app()->isProduction() ? 'rest.clicksend.com' : 'private-anon-5719b2dfad-clicksend.apiary-mock.com') . '/v3/';
-        $this->client = Http::withBasicAuth(config('clicksend.username'), config('services.clicksend.key'))->timeout(15);
     }
 
     /**
@@ -35,14 +32,16 @@ class ClickSend
         $pdf = $this->generatePdf($content);
         $pdf_url = $this->uploadFile($pdf->output());
 
-        $this->client->post($this->base_url . 'post/letters/send', [
-            'file_url'      => $pdf_url,
-            'template_used' => 0,
-            'colour'        => 0,
-            'duplex'        => 1,
-            'priority_post' => 0,
-            'recipients'    => $this->formatDataForMailer($sender, $recipient),
-        ]);
+        Http::withBasicAuth(config('clicksend.username'), config('services.clicksend.key'))
+            ->timeout(15)
+            ->post($this->base_url . 'post/letters/send', [
+                'file_url'      => $pdf_url,
+                'template_used' => 0,
+                'colour'        => 0,
+                'duplex'        => 1,
+                'priority_post' => 0,
+                'recipients'    => $this->formatDataForMailer($sender, $recipient),
+            ]);
 
         $page_count = $pdf->getDomPdf()->getCanvas()->get_page_count();
 
@@ -70,10 +69,12 @@ class ClickSend
         $rear_pdf = $this->generatePdf($content, $rear_pdf_options);
         $rear_pdf_url = $this->uploadFile($rear_pdf->output());
 
-        $this->client->post($this->base_url . 'post/postcards/send', [
-            'file_urls'  => [$front_pdf_url, $rear_pdf_url],
-            'recipients' => $this->formatDataForMailer($sender, $recipient),
-        ]);
+        Http::withBasicAuth(config('clicksend.username'), config('services.clicksend.key'))
+            ->timeout(15)
+            ->post($this->base_url . 'post/postcards/send', [
+                'file_urls'  => [$front_pdf_url, $rear_pdf_url],
+                'recipients' => $this->formatDataForMailer($sender, $recipient),
+            ]);
     }
 
     /**
@@ -125,7 +126,9 @@ class ClickSend
      */
     protected function uploadFile($file)
     {
-        $response = $this->client->attach('file', $file, 'file.pdf')->post($this->base_url . 'uploads?convert=post');
+        $response = Http::withBasicAuth(config('clicksend.username'), config('services.clicksend.key'))
+                        ->timeout(15)
+                        ->attach('file', $file, 'file.pdf')->post($this->base_url . 'uploads?convert=post');
 
         return $response->json()['data']['_url'];
     }
@@ -177,7 +180,9 @@ class ClickSend
      */
     protected function createReturnAddress(array $return_address_data)
     {
-        $response = $this->client->post($this->base_url . 'post/return-addresses', $return_address_data);
+        $response = Http::withBasicAuth(config('clicksend.username'), config('services.clicksend.key'))
+                        ->timeout(15)
+                        ->post($this->base_url . 'post/return-addresses', $return_address_data);
         $response = $response->json()['data'];
 
         $return_address = ClickSendReturnAddress::create([
