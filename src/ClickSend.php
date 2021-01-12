@@ -125,7 +125,7 @@ class ClickSend
      */
     protected function uploadFile($file)
     {
-        $response = $this->client->attach('file', $file, 'file.pdf')->post('uploads?convert=post');
+        $response = $this->client->attach('file', $file, 'file.pdf')->post($this->base_url . 'uploads?convert=post');
 
         return $response->json()['data']['_url'];
     }
@@ -177,7 +177,7 @@ class ClickSend
      */
     protected function createReturnAddress(array $return_address_data)
     {
-        $response = $this->client->post('post/return-addresses', $return_address_data);
+        $response = $this->client->post($this->base_url . 'post/return-addresses', $return_address_data);
         $response = $response->json()['data'];
 
         $return_address = ClickSendReturnAddress::create([
