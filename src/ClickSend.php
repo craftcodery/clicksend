@@ -2,7 +2,7 @@
 
 namespace CraftCodery\ClickSend;
 
-use Barryvdh\DomPDF\Facade as PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use CraftCodery\ClickSend\Models\ClickSendReturnAddress;
 use CraftCodery\ClickSend\Traits\CanReceiveMailers;
 use CraftCodery\ClickSend\Traits\CanSendMailers;
@@ -99,11 +99,11 @@ class ClickSend
      * @param string $content
      * @param array $options
      *
-     * @return PDF
+     * @return \Barryvdh\DomPDF\PDF
      */
     protected function generatePdf(string $content, array $options = [])
     {
-        $pdf = PDF::loadView($options['view'] ?? 'clicksend::letter', compact('content'));
+        $pdf = Pdf::loadView($options['view'] ?? 'clicksend::letter', compact('content'));
 
         if (isset($options['size']) || isset($options['orientation'])) {
             $pdf->setPaper(
